@@ -1,0 +1,37 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build
+dist/
+build/
+bin/
+obj/
+
+# Misc
+.DS_Store
+*.seed
+*.log
+resident_check.txt
+.agent/
+.gemini/
+brain/
+implementation_plan.md
+task.md
+walkthrough.md
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
