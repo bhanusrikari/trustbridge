@@ -42,7 +42,7 @@ exports.getAllServices = async (req, res) => {
                 { model: Category, attributes: ['cat_name'] },
                 { model: ServiceProvider, attributes: ['sname', 'is_verified'] }
             ],
-            where: { is_active: true }
+            where: { is_active: true, status: 'approved' }
         });
         res.json(services);
     } catch (error) {

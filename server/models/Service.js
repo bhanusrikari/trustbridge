@@ -53,6 +53,10 @@ const Service = sequelize.define('Service', {
         type: DataTypes.STRING,
         allowNull: true
     },
+    status: {
+        type: DataTypes.ENUM('pending', 'approved', 'rejected'),
+        defaultValue: 'pending'
+    },
     likes: {
         type: DataTypes.INTEGER,
         defaultValue: 0

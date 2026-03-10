@@ -1,4 +1,4 @@
-const { ServiceProvider, LocalResident, User, Booking, Review, Admin, Notification } = require('../models');
+const { ServiceProvider, LocalResident, User, Booking, Review, Admin, Notification, Service } = require('../models');
 
 exports.verifyProvider = async (req, res) => {
     try {
@@ -99,3 +99,69 @@ exports.getAllResidents = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 }
+
+exports.getPendingServices = async (req, res) => {
+    try {
+        const services = await Service.findAll({
+            where: { status: 'pending' },
+            include: [
+                { model: ServiceProvider, attributes: ['sname', 'email'] }
+            ]
+        });
+        res.status(200).json(services);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching pending services", error });
+    }
+};
+
+exports.approveService = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const service = await Service.findByPk(id);
+        if (!service) return res.status(404).json({ message: "Service not found" });
+
+        await service.update({ status: 'approved' });
+
+        // Notify Provider
+        await Notification.create({
+            uid: service.spid,
+            user_role: 'ServiceProvider',
+            message: `Your service "${service.service_name}" has been approved and is now live!`,
+            type: 'system',
+            related_id: service.service_id,
+            related_role: 'Service'
+        });
+
+        res.status(200).json({ message: "Service approved successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error approving service", error });
+    }
+};
+
+exports.rejectService = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { reason } = req.body;
+        const service = await Service.findByPk(id);
+
+        if (!service) {
+            return res.status(404).json({ message: 'Service not found' });
+        }
+
+        await service.update({ status: 'rejected' });
+
+        // Notify provider
+        await Notification.create({
+            uid: service.spid,
+            user_role: 'ServiceProvider',
+            message: `Your service "${service.service_name}" was rejected. ${reason ? 'Reason: ' + reason : ''}`,
+            type: 'system',
+            related_role: 'Admin'
+        });
+
+        res.json({ message: 'Service rejected successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};

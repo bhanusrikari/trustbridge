@@ -14,6 +14,10 @@ const AddServiceModal = ({ isOpen, onClose, onServiceAdded }) => {
         longitude: ''
     });
 
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [isSearching, setIsSearching] = useState(false);
+
     const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
@@ -29,6 +33,36 @@ const AddServiceModal = ({ isOpen, onClose, onServiceAdded }) => {
             fetchCategories();
         }
     }, [isOpen]);
+
+    const handleSearch = async (query) => {
+        setSearchQuery(query);
+        if (query.length < 3) {
+            setSearchResults([]);
+            return;
+        }
+        setIsSearching(true);
+        try {
+            const res = await api.get(`/admin/search-places?query=${query}`);
+            setSearchResults(res.data);
+        } catch (error) {
+            console.error("Search failed", error);
+        } finally {
+            setIsSearching(false);
+        }
+    };
+
+    const selectPlace = (place) => {
+        setFormData({
+            ...formData,
+            service_name: place.name,
+            address: place.address,
+            latitude: place.lat,
+            longitude: place.lng,
+            description: place.description || formData.description
+        });
+        setSearchQuery(place.name);
+        setSearchResults([]);
+    };
 
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
@@ -78,8 +112,39 @@ const AddServiceModal = ({ isOpen, onClose, onServiceAdded }) => {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="relative">
+                            <label className="block text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1 ml-1">Search Google Maps</label>
+                            <div className="relative">
+                                <input 
+                                    className="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all font-bold placeholder-slate-300 pr-10" 
+                                    placeholder="Search business name..." 
+                                    value={searchQuery} 
+                                    onChange={e => handleSearch(e.target.value)} 
+                                />
+                                {isSearching && (
+                                    <div className="absolute right-3 top-3.5">
+                                        <div className="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                                    </div>
+                                )}
+                            </div>
+                            {searchResults.length > 0 && (
+                                <div className="absolute z-10 w-full mt-2 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden animate-in fade-in slide-in-from-top-2">
+                                    {searchResults.map((result, i) => (
+                                        <button
+                                            key={i}
+                                            type="button"
+                                            onClick={() => selectPlace(result)}
+                                            className="w-full px-4 py-3 text-left hover:bg-slate-50 border-b border-slate-50 last:border-0 transition-colors"
+                                        >
+                                            <div className="font-bold text-slate-900 text-sm">{result.name}</div>
+                                            <div className="text-xs text-slate-500 truncate">{result.address}</div>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                         <div>
-                            <label className="block text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1 ml-1">Service Name</label>
+                            <label className="block text-slate-400 text-[10px] font-black uppercase tracking-widest mb-1 ml-1">Service Display Name</label>
                             <input className="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all font-bold placeholder-slate-300" placeholder="e.g. Deep Home Cleaning" value={formData.service_name} onChange={e => setFormData({ ...formData, service_name: e.target.value })} required />
                         </div>
                         <div>

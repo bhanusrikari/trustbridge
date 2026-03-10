@@ -33,61 +33,59 @@ const Navbar = () => {
     }, [user]);
 
     return (
-        <nav className="bg-white shadow-lg sticky top-0 z-50">
+        <nav className="glass sticky top-0 z-50 border-b border-surface-100/50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between h-16">
+                <div className="flex justify-between h-20">
                     <div className="flex items-center">
-                        <Link to={user ? "/dashboard" : "/"} className="flex-shrink-0 flex items-center">
-                            <span className="text-2xl font-bold text-blue-600">TrustBridge</span>
+                        <Link to={user ? "/dashboard" : "/"} className="flex-shrink-0 flex items-center group">
+                            <span className="text-2xl font-extrabold bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent group-hover:scale-105 transition-transform">TrustBridge</span>
                         </Link>
                     </div>
 
                     {/* Desktop Menu */}
-                    <div className="hidden md:flex items-center space-x-8">
+                    <div className="hidden md:flex items-center space-x-10">
                         {user && user.role !== 'ServiceProvider' && (
                             <>
                                 {user.role === 'Admin' && (
-                                    <Link to="/admin" className="text-gray-600 hover:text-blue-600 font-medium transition duration-150">Admin</Link>
+                                    <Link to="/admin" className="text-surface-600 hover:text-primary-600 font-semibold transition duration-300">Admin</Link>
                                 )}
-                                <Link to="/services" className="text-gray-600 hover:text-blue-600 font-medium transition duration-150">Find Services</Link>
-                                <Link to="/forum" className="text-gray-600 hover:text-blue-600 font-medium transition duration-150">Community Forum</Link>
+                                <Link to="/services" className="text-surface-600 hover:text-primary-600 font-semibold transition duration-300">Services</Link>
+                                <Link to="/forum" className="text-surface-600 hover:text-primary-600 font-semibold transition duration-300">Forum</Link>
                             </>
                         )}
                         {user ? (
-                            <div className="flex items-center space-x-4">
-                                <div className="relative group">
-                                    <Link to="/chat" className="text-gray-600 hover:text-blue-600 font-medium transition duration-150 flex items-center">
-                                        Chat
-                                        {unreadChatCount > 0 && (
-                                            <span className="ml-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                                                {unreadChatCount}
-                                            </span>
-                                        )}
-                                    </Link>
-                                </div>
+                            <div className="flex items-center space-x-6">
+                                <Link to="/chat" className="text-surface-600 hover:text-primary-600 font-semibold transition duration-300 flex items-center">
+                                    Chat
+                                    {unreadChatCount > 0 && (
+                                        <span className="ml-2 bg-accent-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full ring-2 ring-white">
+                                            {unreadChatCount}
+                                        </span>
+                                    )}
+                                </Link>
                                 <NotificationDropdown />
-                                <span className="text-gray-500 text-sm">Hi, {user.ufname || user.fname || user.sname || user.username}</span>
+                                <div className="h-8 w-[1px] bg-surface-200"></div>
                                 <Link
                                     to="/dashboard"
-                                    className="bg-blue-100 text-blue-700 px-4 py-2 rounded-md font-medium hover:bg-blue-200 transition duration-150"
+                                    className="btn-premium bg-primary-100 text-primary-700 hover:bg-primary-200 px-6 py-2.5 text-sm"
                                 >
                                     Dashboard
                                 </Link>
                                 <button
                                     onClick={handleLogout}
-                                    className="text-red-500 hover:text-red-700 font-medium transition duration-150"
+                                    className="text-surface-400 hover:text-accent-600 font-bold text-xs uppercase tracking-widest transition duration-300"
                                 >
-                                    Logout
+                                    Log out
                                 </button>
                             </div>
                         ) : (
-                            <div className="flex items-center space-x-4">
-                                <Link to="/login" className="text-gray-600 hover:text-blue-600 font-medium transition duration-150">Login</Link>
+                            <div className="flex items-center space-x-6">
+                                <Link to="/login" className="text-surface-600 hover:text-primary-600 font-semibold transition duration-300">Login</Link>
                                 <Link
                                     to="/register"
-                                    className="bg-blue-600 text-white px-5 py-2 rounded-md font-medium hover:bg-blue-700 transition duration-150 shadow-md hover:shadow-lg"
+                                    className="btn-premium bg-primary-600 text-white hover:bg-primary-700 px-8 py-3 text-sm"
                                 >
-                                    Get Started
+                                    SIGN UP
                                 </Link>
                             </div>
                         )}

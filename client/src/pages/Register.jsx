@@ -87,149 +87,171 @@ const Register = () => {
     };
 
     return (
-        <div className="min-h-[calc(100vh-64px)] bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Create your account
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] bg-surface-50 py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+            {/* Background elements */}
+            <div className="absolute top-0 left-0 -translate-y-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary-100/20 rounded-full blur-[140px] pointer-events-none"></div>
+            <div className="absolute bottom-0 right-0 translate-y-1/2 translate-x-1/2 w-[800px] h-[800px] bg-accent-100/20 rounded-full blur-[140px] pointer-events-none"></div>
+
+            <div className="sm:mx-auto sm:w-full sm:max-w-md mb-10 relative z-10 text-center">
+                <h2 className="text-4xl font-extrabold text-surface-900 tracking-tight">
+                    Join TrustBridge
                 </h2>
-                <p className="mt-2 text-center text-sm text-gray-600">
-                    Already have an account? <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">Sign in</Link>
+                <p className="mt-3 text-surface-500 font-medium tracking-tight">
+                    Already part of the bridge? <Link to="/login" className="text-primary-600 hover:text-primary-700 font-bold decoration-primary-200 underline-offset-4 hover:underline transition-all">Sign in</Link>
                 </p>
             </div>
 
-            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
-                <div className="bg-white py-8 px-4 shadow-2xl sm:rounded-lg sm:px-10">
-                    <div className="flex justify-center space-x-2 mb-8 bg-gray-100 p-1 rounded-lg">
+            <div className="sm:mx-auto sm:w-full sm:max-w-2xl relative z-10">
+                <div className="card-premium p-8 sm:p-12">
+                    <div className="glass p-1.5 rounded-2xl flex gap-1 mb-12">
                         {['User', 'LocalResident', 'ServiceProvider'].map((role) => (
                             <Link
                                 key={role}
                                 to={`?role=${role}`}
-                                className={`flex-1 text-center px-4 py-2 rounded-md text-sm font-medium transition-all ${formData.role === role
-                                    ? 'bg-white text-blue-600 shadow-sm'
-                                    : 'text-gray-500 hover:text-gray-700'
+                                className={`flex-1 text-center py-3 rounded-xl text-[10px] font-black tracking-widest transition-all ${formData.role === role
+                                    ? 'bg-primary-600 text-white shadow-premium'
+                                    : 'text-surface-500 hover:text-surface-900'
                                     }`}
                             >
-                                {role === 'User' ? 'Newcomer' : role.replace(/([A-Z])/g, ' $1').trim()}
+                                {role === 'User' ? 'USER' : role.replace(/([A-Z])/g, ' $1').toUpperCase().trim()}
                             </Link>
                         ))}
                     </div>
 
                     {error && (
-                        <div className="bg-red-50 border-1 border-red-500 text-red-700 p-3 rounded mb-6 text-sm flex items-center">
-                            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
-                            {error}
+                        <div className="bg-accent-50/50 border border-accent-100 p-4 rounded-2xl mb-8 animate-shake">
+                            <div className="flex items-center gap-3">
+                                <svg className="h-5 w-5 text-accent-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                </svg>
+                                <p className="text-sm text-accent-700 font-bold">{error}</p>
+                            </div>
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Email Address</label>
-                            <input type="email" name="email" value={formData.email} onChange={handleChange} required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mt-1" />
-                        </div>
-
-                        {formData.role === 'User' && (
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">First Name</label>
-                                    <input type="text" name="ufname" value={formData.ufname} onChange={handleChange} required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mt-1" />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Last Name</label>
-                                    <input type="text" name="ulname" value={formData.ulname} onChange={handleChange} required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mt-1" />
-                                </div>
+                    <form onSubmit={handleSubmit} className="space-y-10">
+                        {/* Personal Information */}
+                        <div className="space-y-6">
+                            <div className="flex items-center gap-4 mb-2">
+                                <div className="h-[1px] flex-grow bg-surface-100"></div>
+                                <span className="text-[10px] font-black text-surface-300 uppercase tracking-[0.3em]">Personal Information</span>
+                                <div className="h-[1px] flex-grow bg-surface-100"></div>
                             </div>
-                        )}
-
-                        {formData.role === 'LocalResident' && (
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">First Name</label>
-                                    <input type="text" name="fname" value={formData.fname} onChange={handleChange} required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mt-1" />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Last Name</label>
-                                    <input type="text" name="lname" value={formData.lname} onChange={handleChange} required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mt-1" />
-                                </div>
-                            </div>
-                        )}
-
-                        {formData.role === 'ServiceProvider' && (
+                            
                             <div className="space-y-4">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 uppercase tracking-wider text-[10px] font-black mb-1">Service/Business Name</label>
-                                        <input type="text" name="sname" value={formData.sname} onChange={handleChange} required className="appearance-none block w-full px-4 py-3 border border-slate-200 rounded-2xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-slate-50" placeholder="e.g. Hyderabad Home Services" />
+                                <div className="space-y-2">
+                                    <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">Email Address</label>
+                                    <input type="email" name="email" value={formData.email} onChange={handleChange} required className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm" placeholder="your@email.com" />
+                                </div>
+
+                                {formData.role === 'User' && (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">First Name</label>
+                                            <input type="text" name="ufname" value={formData.ufname} onChange={handleChange} required className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">Last Name</label>
+                                            <input type="text" name="ulname" value={formData.ulname} onChange={handleChange} required className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm" />
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 uppercase tracking-wider text-[10px] font-black mb-1">Primary Category</label>
-                                        <select name="cat_id" value={formData.cat_id} onChange={handleChange} required className="appearance-none block w-full px-4 py-3 border border-slate-200 rounded-2xl shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-slate-50 cursor-pointer">
-                                            <option value="">Choose a Category</option>
-                                            {categories.map(cat => (
-                                                <option key={cat.cat_id} value={cat.cat_id}>{cat.cat_name}</option>
-                                            ))}
-                                        </select>
+                                )}
+
+                                {formData.role === 'LocalResident' && (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">First Name</label>
+                                            <input type="text" name="fname" value={formData.fname} onChange={handleChange} required className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">Last Name</label>
+                                            <input type="text" name="lname" value={formData.lname} onChange={handleChange} required className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm" />
+                                        </div>
                                     </div>
-                                </div>
+                                )}
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 uppercase tracking-wider text-[10px] font-black mb-1">Business Bio / Description</label>
-                                    <textarea name="description" value={formData.description || ''} onChange={handleChange} className="appearance-none block w-full px-4 py-3 border border-slate-200 rounded-2xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-slate-50 h-24" placeholder="Tell us about your expertise and services..." />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 uppercase tracking-wider text-[10px] font-black mb-1">Verification Documents (JSON/Link)</label>
-                                    <input type="text" name="documents" value={formData.documents || ''} onChange={handleChange} className="appearance-none block w-full px-4 py-3 border border-slate-200 rounded-2xl shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-slate-50" placeholder="Paste link to Aadhaar/License for AI Verification" />
-                                    <p className="mt-1 text-[10px] text-amber-600 font-bold italic">* Documents will be scanned by our AI Safety Layer for legitimacy.</p>
-                                </div>
-                            </div>
-                        )}
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-                                <input
-                                    type="text"
-                                    name={formData.role === 'ServiceProvider' ? "phone" : "phone_number"}
-                                    value={formData.role === 'ServiceProvider' ? formData.phone : formData.phone_number}
-                                    onChange={handleChange}
-                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mt-1"
-                                />
-                            </div>
-                            {(formData.role === 'User' || formData.role === 'ServiceProvider') && (
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Address</label>
-                                    <input type="text" name="address" value={formData.address} onChange={handleChange} className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mt-1" />
-                                </div>
-                            )}
-                        </div>
-
-                        {formData.role === 'LocalResident' && (
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">City</label>
-                                    <input type="text" name="city" value={formData.city} onChange={handleChange} required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mt-1" />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700">Area</label>
-                                    <input type="text" name="area" value={formData.area} onChange={handleChange} className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mt-1" />
-                                </div>
-                            </div>
-                        )}
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Password</label>
-                                <input type="password" name="password" value={formData.password} onChange={handleChange} required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mt-1" />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
-                                <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mt-1" />
+                                {formData.role === 'ServiceProvider' && (
+                                    <>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                            <div className="space-y-2">
+                                                <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">Business Name</label>
+                                                <input type="text" name="sname" value={formData.sname} onChange={handleChange} required className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm" placeholder="Business Name" />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">Service Category</label>
+                                                <select name="cat_id" value={formData.cat_id} onChange={handleChange} required className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm cursor-pointer appearance-none">
+                                                    <option value="">Choose category</option>
+                                                    {categories.map(cat => (
+                                                        <option key={cat.cat_id} value={cat.cat_id}>{cat.cat_name}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">Verification Documents</label>
+                                            <input type="text" name="documents" value={formData.documents || ''} onChange={handleChange} className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm" placeholder="Paste link for verification" />
+                                            <p className="text-[10px] text-accent-500 font-bold ml-1 tracking-tight italic">Documents will be reviewed after submission.</p>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
 
-                        <div>
-                            <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
-                                Create Account
+                        {/* Account Security */}
+                        <div className="space-y-6">
+                            <div className="flex items-center gap-4 mb-2">
+                                <div className="h-[1px] flex-grow bg-surface-100"></div>
+                                <span className="text-[10px] font-black text-surface-300 uppercase tracking-[0.3em]">Account Security</span>
+                                <div className="h-[1px] flex-grow bg-surface-100"></div>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">Phone Number</label>
+                                        <input
+                                            type="text"
+                                            name={formData.role === 'ServiceProvider' ? "phone" : "phone_number"}
+                                            value={formData.role === 'ServiceProvider' ? formData.phone : formData.phone_number}
+                                            onChange={handleChange}
+                                            placeholder="+91"
+                                            className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm"
+                                        />
+                                    </div>
+                                    {(formData.role === 'User' || formData.role === 'ServiceProvider') && (
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">Home Address</label>
+                                            <input type="text" name="address" value={formData.address} onChange={handleChange} className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm" />
+                                        </div>
+                                    )}
+                                    {formData.role === 'LocalResident' && (
+                                        <div className="space-y-2">
+                                            <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">Target Area</label>
+                                            <input type="text" name="area" value={formData.area} onChange={handleChange} className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm" placeholder="e.g. Miyapur" />
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4 border-t border-surface-50">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">Password</label>
+                                        <input type="password" name="password" value={formData.password} onChange={handleChange} required className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm" placeholder="••••••••" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-black text-surface-400 uppercase tracking-widest ml-1">Confirm Password</label>
+                                        <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required className="block w-full bg-surface-50/50 border-surface-100 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:bg-white py-4 px-5 font-bold text-surface-900 transition-all shadow-sm" placeholder="••••••••" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="pt-6">
+                            <button
+                                type="submit"
+                                className="btn-premium w-full bg-surface-900 text-white hover:bg-primary-600 py-5 flex items-center justify-center gap-4 shadow-xl"
+                            >
+                                <span className="text-xs font-black tracking-[0.3em]">CREATE ACCOUNT</span>
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
                             </button>
                         </div>
                     </form>
